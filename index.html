@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SUNA CAFE｜自家焙煎珈琲</title>
+
+<!--
+  SUNA CAFE トップページ
+  - 単一HTMLファイル（CSS埋め込み）。VS Codeでそのまま編集できます。
+  - 写真は .photo / .hero に background-image で入れる想定。下のコメントを参照。
+  - ★ メニューの価格・本文テキストは画像から読み取った仮の値です。Figmaの正値に直してください。
+-->
+
+<!-- フォント（明朝＋ガラモン）。ブラウザ表示時に読み込まれます -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Shippori+Mincho:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --brown:        #3a2a1d;   /* ヘッダー・フッター */
+    --brown-deep:   #2b1f15;   /* メニュー（濃い木目） */
+    --cream:        #ece3d1;   /* 生成りの主背景 */
+    --cream-light:  #f3ecdb;   /* 明るいクリーム */
+    --gold:         #b89358;   /* 金の罫線・ラベル */
+    --gold-soft:    #c8ac79;
+    --ink:          #463526;   /* 文字（明色背景上） */
+    --ink-soft:     #6e5c46;   /* 本文のやや薄い文字 */
+    --paper:        rgba(150,120,80,.05);
+
+    --serif-jp: "Shippori Mincho", "Hiragino Mincho ProN", "Yu Mincho", serif;
+    --serif-en: "Cormorant Garamond", "Shippori Mincho", serif;
+
+    --maxw: 960px;
+    --inner: 1240px;   /* 文章ブロックの読みやすい最大幅。広げたい時はここを大きく */
+  }
+
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  body{
+    font-family:var(--serif-jp);
+    color:var(--ink);
+    background:var(--brown-deep);
+    line-height:1.9;
+    -webkit-font-smoothing:antialiased;
+  }
+  img{ display:block; max-width:100%; }
+  a{ color:inherit; text-decoration:none; }
+
+  /* ページ枠：全幅 */
+  .page{ width:100%; background:var(--cream); }
+
+  /* 背景は画面いっぱい・中身はこの幅で中央寄せ */
+  .container{ width:100%; max-width:var(--inner); margin-inline:auto; padding-inline:3.5rem; }
+
+  /* 小さな金のラベル（— Our Story など） */
+  .eyebrow{
+    font-family:var(--serif-en);
+    font-style:italic;
+    font-size:1.75rem;
+    letter-spacing:.08em;
+    color:var(--gold);
+  }
+  .eyebrow::before{ content:"— "; }
+
+  /* ============ ヘッダー ============ */
+  .site-header{
+    position:sticky; top:0; z-index:50;
+    background:var(--brown);
+    padding:0;
+    border-bottom:1px solid rgba(184,147,88,.35);
+  }
+  .site-header .container{
+    display:flex; align-items:center; justify-content:space-between;
+    padding-block:.85rem;
+  }
+  .brand .name{
+    font-family:var(--serif-en);
+    font-weight:500;
+    letter-spacing:.34em;
+    font-size:2.1rem;
+    color:var(--cream-light);
+  }
+  .brand .sub{
+    font-size:1.25rem; letter-spacing:.5em; color:var(--gold-soft);
+    margin-top:.1rem; padding-left:.1em;
+  }
+  .nav{ display:flex; gap:2.1rem; }
+  .nav a{
+    font-size:1.395rem; letter-spacing:.18em; color:#e8ddc8;
+    position:relative; padding-bottom:.2rem;
+  }
+  .nav a::after{
+    content:""; position:absolute; left:0; bottom:0; width:0; height:1px;
+    background:var(--gold-soft); transition:width .35s ease;
+  }
+  .nav a:hover::after{ width:100%; }
+
+  /* ============ ヒーロー ============ */
+  .hero{
+    position:relative; min-height:700px;
+    display:flex; align-items:center;
+    /* ↓ 写真を入れる場合: background-image: url('images/hero.jpg'); */
+    background:
+      radial-gradient(620px 420px at 78% 30%, rgba(214,170,96,.30), transparent 60%),
+      linear-gradient(95deg, rgba(28,19,12,.92) 0%, rgba(40,28,18,.55) 45%, rgba(54,38,24,.30) 100%),
+      linear-gradient(135deg, #3a2a1b, #1d130c);
+    background-size:cover; background-position:center;
+    background-image: url('images/background-image.jpg');
+    color:#f4ecdb;
+    padding:0;
+  }
+  .hero-inner{ 
+    max-width:520px;
+    background:rgba(0,0,0,.45);
+    padding:2.4rem 2.6rem;
+    border-radius:4px;}
+
+  .hero .since{
+    font-family:var(--serif-en); font-style:italic; font-weight:500;
+    letter-spacing:.18em; color:var(--gold-soft); font-size:1.5rem;
+    margin-bottom:1.1rem;
+  }
+  .hero h1{
+    font-weight:600; font-size:2.85rem; line-height:1.55;
+    letter-spacing:.06em; text-shadow:0 2px 18px rgba(0,0,0,.4);
+  }
+  .hero .lead{
+    margin-top:1.4rem; font-size:1.25rem; letter-spacing:.16em;
+    color:#e3d7c2; border-left:2px solid var(--gold-soft); padding-left:1rem;
+  }
+  .scroll-cue{
+    position:absolute; left:50%; bottom:1.4rem; transform:translateX(-50%);
+    font-family:var(--serif-en); font-style:italic; letter-spacing:.3em;
+    font-size:1.25rem; color:#ffffff; opacity:1;
+  }
+  .scroll-cue::after{
+    content:""; display:block; width:1px; height:34px; margin:.6rem auto 0;
+    background:linear-gradient(#ffffff, transparent);
+    animation:scrollLine 2.2s ease-in-out infinite;
+  }
+  @keyframes scrollLine{ 0%,100%{opacity:.3; transform:scaleY(.6);} 50%{opacity:1; transform:scaleY(1);} }
+
+  /* ============ 汎用セクション ============ */
+  .section{ padding:6rem 0; }
+  .section--cream{
+    background-color:var(--cream);
+    background-image:
+      repeating-linear-gradient(45deg,  transparent 0 15px, var(--paper) 15px 16px),
+      repeating-linear-gradient(-45deg, transparent 0 15px, var(--paper) 15px 16px);
+  }
+  .section--cream-light{ background:var(--cream-light); }
+
+  .two-col{ display:grid; grid-template-columns:1fr 1fr; gap:3.2rem; align-items:center; }
+  h2.headline{ font-size:1.9rem; font-weight:600; line-height:1.6; letter-spacing:.05em; margin:.9rem 0 1.6rem; }
+  .body-text{ font-size:.88rem; letter-spacing:.05em; color:var(--ink-soft); }
+  .body-text + .body-text{ margin-top:1.1rem; }
+  .sign{ font-family:var(--serif-en); font-style:italic; color:var(--gold); margin-top:1.6rem; text-align:right; letter-spacing:.1em; font-size:1.25rem; 
+    }
+
+  /* 写真プレースホルダー（背景に画像を差し替え可能） */
+.photo{
+  aspect-ratio:4/3; border-radius:2px;
+  background-size:cover;          /* 枠いっぱいに拡大して切り抜き */
+  background-position:center;
+  background-repeat:no-repeat;
+  box-shadow:0 18px 40px rgba(50,30,15,.25);
+}
+.photo{ background-image:url('images/drip.jpg'); }  /* Story（ドリップ） */
+.photo--cup{ background-image:url('images/coffee.jpg'); }   /* Signatureだけ上書き */
+
+  /* ============ Signature 価格 ============ */
+  .sub-jp{ font-weight:600; font-size:1.25rem; letter-spacing:.1em; margin-top:.4rem; }
+  .sub-en{ font-family:var(--serif-en); font-style:italic; color:var(--gold); letter-spacing:.06em; margin-bottom:1.2rem; }
+  .price{ font-family:var(--serif-en); font-size:1.3rem; color:var(--ink); margin-top:1.4rem; letter-spacing:.05em; }
+
+  /* ============ メニュー ============ */
+  .menu{
+    background-color:var(--brown-deep);
+    background-image:repeating-linear-gradient(90deg, rgba(255,255,255,.018) 0 1px, transparent 1px 7px);
+    color:#e7d9c1; padding:5.5rem 0 6rem;
+  }
+  .menu .head{ text-align:center; margin-bottom:3.4rem; }
+  .menu .eyebrow{ color:var(--gold-soft); }
+  .menu h2{ font-weight:600; font-size:1.9rem; letter-spacing:.32em; margin-top:.6rem; }
+  .menu-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:3rem; }
+  .menu-cat{ font-family:var(--serif-en); font-style:italic; font-size:1.5rem; color:var(--gold-soft);
+             border-bottom:1px solid rgba(184,147,88,.4); padding-bottom:.6rem; margin-bottom:1.2rem; }
+  .menu-item{ display:flex; align-items:baseline; font-size:1.25rem; letter-spacing:.06em; margin:.85rem 0; color:#ddcdb4; }
+  .menu-item .dots{ flex:1; margin:0 .5rem; border-bottom:1px dotted rgba(200,172,121,.5); transform:translateY(-4px); }
+  .menu-item .yen{ font-family:var(--serif-en); color:var(--gold-soft); white-space:nowrap; }
+
+  /* マップ */
+  .map {
+    position:relative;
+    aspect-ratio:4/3;
+    border-radius:3px;
+    overflow:hidden;
+    box-shadow:0 14px 34px rgba(50,30,15,.25);
+  }
+  
+  .map iframe{ 
+      position:absolute;
+      inset:0;
+      width:100%; 
+      height:100%; 
+      border:0; 
+      display:block; 
+    }
+  
+  /* ============ アクセス ============ */
+  .access-grid{ display:grid; grid-template-columns:1fr 1fr; gap:3rem; align-items:center; }
+  .info-row{ display:grid; grid-template-columns:90px 1fr; gap:1rem; padding:.85rem 0;
+             border-bottom:1px solid rgba(150,120,80,.22); align-items:center; }
+  .info-row .label{ font-family:var(--serif-en); font-style:italic; color:var(--gold); letter-spacing:.05em; font-size:1.25rem; }
+  .info-row .val{ font-size:.86rem; letter-spacing:.06em; color:var(--ink); }
+  .info-row .note{ display:block; font-size:.72rem; color:var(--ink-soft); margin-top:.2rem; }
+
+
+
+
+  /* ============ フッター ============ */
+  .site-footer{ background:var(--brown); color:#e3d6bf; text-align:center; padding:3.4rem 1.5rem; }
+  .site-footer .fname{ font-family:var(--serif-en); letter-spacing:.34em; font-size:1.875rem; color:var(--cream-light); }
+  .site-footer .fsub{ font-size:1.25rem; letter-spacing:.5em; color:var(--gold-soft); margin:.4rem 0 1.4rem; }
+  .site-footer .ftel{ font-family:var(--serif-en); font-size:1.5rem; letter-spacing:.12em; }
+  .site-footer .fhours{ font-size:1.25rem; letter-spacing:.1em; margin-top:.5rem; color:#cdbda3; }
+  .site-footer .copy{ font: size 1.25rem; letter-spacing:.2em; color:#9c8a70; margin-top:1.8rem; }
+
+  /* ============ スクロール表示アニメ ============ */
+  .reveal{ opacity:0; transform:translateY(22px); transition:opacity .9s ease, transform .9s ease; }
+  .reveal.in{ opacity:1; transform:none; }
+
+  /* ============ レスポンシブ ============ */
+  @media (max-width:760px){
+    .container{ padding-inline:1.5rem; }
+    .site-header .container{ flex-direction:column; gap:.7rem; }
+    .nav{ gap:1.2rem; flex-wrap:wrap; justify-content:center; }
+    .hero{ min-height:480px; }
+    .hero h1{ font-size:2rem; }
+    .section{ padding:3.5rem 0; }
+    .two-col, .access-grid{ grid-template-columns:1fr; gap:2rem; }
+    .menu{ padding:3.5rem 0; }
+    .menu-grid{ grid-template-columns:1fr; gap:2.2rem; }
+    .photo--cup{ order:-1; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ============ ヘッダー ============ -->
+  <header class="site-header">
+    <div class="container">
+      <div class="brand">
+        <div class="name">SUNA CAFE</div>
+        <div class="sub">自家焙煎珈琲</div>
+      </div>
+      <nav class="nav">
+        <a href="#story">私たちのこと</a>
+        <a href="#signature">おすすめ</a>
+        <a href="#menu">メニュー</a>
+        <a href="#access">アクセス</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ============ ヒーロー ============ -->
+  <section class="hero">
+    <!-- 写真を入れる時は .hero の background-image を画像に差し替え -->
+    <div class="container">
+      <div class="hero-inner">
+        <p class="since">Since 1996</p>
+        <h1>創業三十年、<br>夫婦で営む<br>自家焙煎の喫茶店。</h1>
+        <p class="lead">いつもの一杯が、待っています。</p>
+      </div>
+    </div>
+    <div class="scroll-cue">SCROLL</div>
+  </section>
+
+  <!-- ============ Our Story ============ -->
+  <section class="section section--cream" id="story">
+    <div class="container">
+    <div class="two-col">
+      <div class="reveal">
+        <p class="eyebrow">Our Story</p>
+        <h2 class="headline">変わらない一杯を、<br>変わらないこの場所で。</h2>
+        <p class="body-text">一九九六年、この場所で小さな喫茶店をはじめました。妻が選んだ豆を、私が一粒ずつ焙煎する。あの頃から変わらないのは、急がず、ていねいに一杯を淹れること。</p>
+        <p class="body-text">新しいお店も増えましたが、ここには三十年分の時間と、変わらない味があります。どうぞ、ゆっくりしていってください。</p>
+        <p class="sign">— SUNA CAFE</p>
+      </div>
+      <!-- 写真: 差し替え時は background を url('images/pourover.jpg') に -->
+      <div class="photo reveal" role="img" aria-label="ハンドドリップで淹れる珈琲"></div>
+    </div>
+    </div>
+  </section>
+
+  <!-- ============ Signature ============ -->
+  <section class="section section--cream-light" id="signature">
+    <div class="container">
+    <div class="two-col">
+      <!-- 写真: 差し替え時は background を url('images/cup.jpg') に -->
+      <div class="photo photo--cup reveal" role="img" aria-label="オリジナルブレンドコーヒー"></div>
+      <div class="reveal">
+        <p class="eyebrow">Signature</p>
+        <h2 class="headline">いちばんに、<br>飲んでほしい一杯。</h2>
+        <p class="sub-jp">オリジナルブレンド ハンドドリップコーヒー</p>
+        <p class="sub-en">Original Blend, Hand Drip</p>
+        <p class="body-text">自家焙煎したオリジナルブレンドの豆を、一杯ずつ手で淹れます。深く香ばしく、当店だけの味わい。長く通ってくださる常連さんにも愛される、看板の一杯です。</p>
+        <p class="price">¥ 500</p>
+      </div>
+    </div>
+    </div>
+  </section>
+
+  <!-- ============ Menu（★価格は仮。Figmaの値に要確認） ============ -->
+  <section class="menu" id="menu">
+    <div class="container">
+    <div class="head reveal">
+      <p class="eyebrow">Menu</p>
+      <h2>お品書き</h2>
+    </div>
+    <div class="menu-grid reveal">
+      <div>
+        <p class="menu-cat">Coffee</p>
+        <div class="menu-item"><span>オリジナルブレンド</span><span class="dots"></span><span class="yen">¥500</span></div>
+        <div class="menu-item"><span>深煎りブレンド</span><span class="dots"></span><span class="yen">¥550</span></div>
+        <div class="menu-item"><span>カフェオレ</span><span class="dots"></span><span class="yen">¥550</span></div>
+        <div class="menu-item"><span>本日のストレート</span><span class="dots"></span><span class="yen">¥600</span></div>
+      </div>
+      <div>
+        <p class="menu-cat">Drink</p>
+        <div class="menu-item"><span>紅茶</span><span class="dots"></span><span class="yen">¥500</span></div>
+        <div class="menu-item"><span>ミルクティー</span><span class="dots"></span><span class="yen">¥550</span></div>
+        <div class="menu-item"><span>クリームソーダ</span><span class="dots"></span><span class="yen">¥600</span></div>
+      </div>
+      <div>
+        <p class="menu-cat">Food and Sweets</p>
+        <div class="menu-item"><span>厚切りトースト</span><span class="dots"></span><span class="yen">¥400</span></div>
+        <div class="menu-item"><span>ハムエッグトースト</span><span class="dots"></span><span class="yen">¥600</span></div>
+        <div class="menu-item"><span>ナポリタン</span><span class="dots"></span><span class="yen">¥800</span></div>
+        <div class="menu-item"><span>自家製プリン</span><span class="dots"></span><span class="yen">¥450</span></div>
+      </div>
+    </div>
+    </div>
+  </section>
+
+  <!-- ============ Access ============ -->
+  <section class="section section--cream" id="access">
+    <div class="container">
+    <p class="eyebrow reveal">Access</p>
+    <h2 class="headline reveal" style="margin-bottom:2rem;">アクセス・営業時間</h2>
+    <div class="access-grid">
+      <div class="reveal">
+        <div class="info-row"><span class="label">Open</span><span class="val">平日・土曜　9:00 – 18:00</span></div>
+        <div class="info-row"><span class="label">Closed</span><span class="val">日曜日</span></div>
+        <div class="info-row"><span class="label">Parking</span><span class="val">3台分のスペースあり<span class="note">お停めしにくい場合はご連絡ください</span></span></div>
+        <div class="info-row"><span class="label">Address</span><span class="val">〇〇県〇〇市〇〇 0-0-0</span></div>
+        <div class="info-row"><span class="label">Tel</span><span class="val">000-000-0000</span></div>
+      </div>
+      <!-- 実装時はGoogleマップの埋め込み（iframe）に差し替え -->
+      <div class="map reveal" role="img" aria-label="店舗周辺の地図">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d416941.76874438237!2d138.02955633835728!3d35.27223511593939!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601bbf207a58856f%3A0xadc77626a8878101!2z6Z2Z5bKh55yM6Z2Z5bKh5biC!5e0!3m2!1sja!2sjp!4v1780637025567!5m2!1sja!2sjp" width="400" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      </div>
+    </div>
+    </div>
+  </section>
+
+  <!-- ============ フッター ============ -->
+  <footer class="site-footer">
+    <div class="fname">SUNA CAFE</div>
+    <div class="fsub">自家焙煎珈琲</div>
+    <div class="ftel">000-000-0000</div>
+    <div class="fhours">平日・土曜 9:00 – 18:00 ／ 日曜定休</div>
+    <div class="copy">© 2025 SUNA CAFE</div>
+  </footer>
+
+</div>
+
+<script>
+  // スクロールで各要素をふわっと表示
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+</body>
+</html>
