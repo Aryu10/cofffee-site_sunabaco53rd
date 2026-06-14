@@ -8,14 +8,14 @@
 <!--
   SUNA CAFE トップページ
   - 単一HTMLファイル（CSS埋め込み）。VS Codeでそのまま編集できます。
-  - 写真は .photo / .hero に background-image で入れる想定。下のコメントを参照。
-  - ★ メニューの価格・本文テキストは画像から読み取った仮の値です。Figmaの正値に直してください。
+  - 写真は .photo / .hero に background-image で入れる想定。
+  - ★ メニューの価格・本文テキストは仮の値です。Figmaの正値に直してください。
 -->
 
-<!-- フォント（明朝＋ガラモン）。ブラウザ表示時に読み込まれます -->
+<!-- フォント（明朝＋ガラモン）。Cormorant Garamond は Bold(700)/Bold Italic も読み込み -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Shippori+Mincho:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&family=Shippori+Mincho:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
   :root{
@@ -25,6 +25,7 @@
     --cream-light:  #f3ecdb;   /* 明るいクリーム */
     --gold:         #b89358;   /* 金の罫線・ラベル */
     --gold-soft:    #c8ac79;
+    --label:        #FFBC88;   /* 英字ラベル（— Our Story / Coffee 等）の色 */
     --ink:          #463526;   /* 文字（明色背景上） */
     --ink-soft:     #6e5c46;   /* 本文のやや薄い文字 */
     --paper:        rgba(150,120,80,.05);
@@ -34,6 +35,7 @@
 
     --maxw: 960px;
     --inner: 1240px;   /* 文章ブロックの読みやすい最大幅。広げたい時はここを大きく */
+    --gap: 3rem;       /* 左右2カラムの間隔（全セクション共通） */
   }
 
   *{ margin:0; padding:0; box-sizing:border-box; }
@@ -51,16 +53,17 @@
   /* ページ枠：全幅 */
   .page{ width:100%; background:var(--cream); }
 
-  /* 背景は画面いっぱい・中身はこの幅で中央寄せ */
+  /* 背景は画面いっぱい・中身はこの幅で中央寄せ（＝全セクション共通の左右ライン） */
   .container{ width:100%; max-width:var(--inner); margin-inline:auto; padding-inline:3.5rem; }
 
-  /* 小さな金のラベル（— Our Story など） */
+  /* 小さな英字ラベル（— Our Story など）：Bold Italic / 字間20% / #FFBC88 */
   .eyebrow{
     font-family:var(--serif-en);
     font-style:italic;
+    font-weight:700;
     font-size:1.75rem;
-    letter-spacing:.08em;
-    color:var(--gold);
+    letter-spacing:.2em;
+    color:var(--label);
   }
   .eyebrow::before{ content:"— "; }
 
@@ -101,7 +104,6 @@
   .hero{
     position:relative; min-height:700px;
     display:flex; align-items:center;
-    /* ↓ 写真を入れる場合: background-image: url('images/hero.jpg'); */
     background:
       radial-gradient(620px 420px at 78% 30%, rgba(214,170,96,.30), transparent 60%),
       linear-gradient(95deg, rgba(28,19,12,.92) 0%, rgba(40,28,18,.55) 45%, rgba(54,38,24,.30) 100%),
@@ -111,12 +113,12 @@
     color:#f4ecdb;
     padding:0;
   }
-  .hero-inner{ 
+  .hero-inner{
     max-width:520px;
     background:rgba(0,0,0,.45);
     padding:2.4rem 2.6rem;
-    border-radius:4px;}
-
+    border-radius:4px;
+  }
   .hero .since{
     font-family:var(--serif-en); font-style:italic; font-weight:500;
     letter-spacing:.18em; color:var(--gold-soft); font-size:1.5rem;
@@ -152,23 +154,23 @@
   }
   .section--cream-light{ background:var(--cream-light); }
 
-  .two-col{ display:grid; grid-template-columns:1fr 1fr; gap:3.2rem; align-items:center; }
+  /* 左右2カラム：gapを全セクション共通(--gap)にして内側ラインも揃える */
+  .two-col{ display:grid; grid-template-columns:1fr 1fr; gap:var(--gap); align-items:center; }
   h2.headline{ font-size:1.9rem; font-weight:600; line-height:1.6; letter-spacing:.05em; margin:.9rem 0 1.6rem; }
   .body-text{ font-size:.88rem; letter-spacing:.05em; color:var(--ink-soft); }
   .body-text + .body-text{ margin-top:1.1rem; }
-  .sign{ font-family:var(--serif-en); font-style:italic; color:var(--gold); margin-top:1.6rem; text-align:right; letter-spacing:.1em; font-size:1.25rem; 
-    }
+  .sign{ font-family:var(--serif-en); font-style:italic; color:var(--gold); margin-top:1.6rem; text-align:right; letter-spacing:.1em; font-size:1.25rem; }
 
-  /* 写真プレースホルダー（背景に画像を差し替え可能） */
-.photo{
-  aspect-ratio:4/3; border-radius:2px;
-  background-size:cover;          /* 枠いっぱいに拡大して切り抜き */
-  background-position:center;
-  background-repeat:no-repeat;
-  box-shadow:0 18px 40px rgba(50,30,15,.25);
-}
-.photo{ background-image:url('images/drip.jpg'); }  /* Story（ドリップ） */
-.photo--cup{ background-image:url('images/coffee.jpg'); }   /* Signatureだけ上書き */
+  /* 写真（背景に画像を差し替え可能） */
+  .photo{
+    aspect-ratio:4/3; border-radius:2px;
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+    box-shadow:0 18px 40px rgba(50,30,15,.25);
+  }
+  .photo{ background-image:url('images/drip.jpg'); }       /* Story（ドリップ） */
+  .photo--cup{ background-image:url('images/coffee.jpg'); } /* Signatureだけ上書き */
 
   /* ============ Signature 価格 ============ */
   .sub-jp{ font-weight:600; font-size:1.25rem; letter-spacing:.1em; margin-top:.4rem; }
@@ -182,43 +184,39 @@
     color:#e7d9c1; padding:5.5rem 0 6rem;
   }
   .menu .head{ text-align:center; margin-bottom:3.4rem; }
-  .menu .eyebrow{ color:var(--gold-soft); }
   .menu h2{ font-weight:600; font-size:1.9rem; letter-spacing:.32em; margin-top:.6rem; }
-  .menu-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:3rem; }
-  .menu-cat{ font-family:var(--serif-en); font-style:italic; font-size:1.5rem; color:var(--gold-soft);
+  .menu-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:var(--gap); }
+  /* カテゴリ見出し（Coffee 等）：Bold / 字間0% / #FFBC88（イタリックなし） */
+  .menu-cat{ font-family:var(--serif-en); font-weight:700; font-size:1.5rem; letter-spacing:0; color:var(--label);
              border-bottom:1px solid rgba(184,147,88,.4); padding-bottom:.6rem; margin-bottom:1.2rem; }
   .menu-item{ display:flex; align-items:baseline; font-size:1.25rem; letter-spacing:.06em; margin:.85rem 0; color:#ddcdb4; }
   .menu-item .dots{ flex:1; margin:0 .5rem; border-bottom:1px dotted rgba(200,172,121,.5); transform:translateY(-4px); }
   .menu-item .yen{ font-family:var(--serif-en); color:var(--gold-soft); white-space:nowrap; }
 
   /* マップ */
-  .map {
+  .map{
     position:relative;
     aspect-ratio:4/3;
     border-radius:3px;
     overflow:hidden;
     box-shadow:0 14px 34px rgba(50,30,15,.25);
   }
-  
-  .map iframe{ 
-      position:absolute;
-      inset:0;
-      width:100%; 
-      height:100%; 
-      border:0; 
-      display:block; 
-    }
-  
+  .map iframe{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    border:0;
+    display:block;
+  }
+
   /* ============ アクセス ============ */
-  .access-grid{ display:grid; grid-template-columns:1fr 1fr; gap:3rem; align-items:center; }
+  .access-grid{ display:grid; grid-template-columns:1fr 1fr; gap:var(--gap); align-items:center; }
   .info-row{ display:grid; grid-template-columns:90px 1fr; gap:1rem; padding:.85rem 0;
              border-bottom:1px solid rgba(150,120,80,.22); align-items:center; }
   .info-row .label{ font-family:var(--serif-en); font-style:italic; color:var(--gold); letter-spacing:.05em; font-size:1.25rem; }
   .info-row .val{ font-size:.86rem; letter-spacing:.06em; color:var(--ink); }
   .info-row .note{ display:block; font-size:.72rem; color:var(--ink-soft); margin-top:.2rem; }
-
-
-
 
   /* ============ フッター ============ */
   .site-footer{ background:var(--brown); color:#e3d6bf; text-align:center; padding:3.4rem 1.5rem; }
@@ -226,7 +224,7 @@
   .site-footer .fsub{ font-size:1.25rem; letter-spacing:.5em; color:var(--gold-soft); margin:.4rem 0 1.4rem; }
   .site-footer .ftel{ font-family:var(--serif-en); font-size:1.5rem; letter-spacing:.12em; }
   .site-footer .fhours{ font-size:1.25rem; letter-spacing:.1em; margin-top:.5rem; color:#cdbda3; }
-  .site-footer .copy{ font: size 1.25rem; letter-spacing:.2em; color:#9c8a70; margin-top:1.8rem; }
+  .site-footer .copy{ font-size:1.25rem; letter-spacing:.2em; color:#9c8a70; margin-top:1.8rem; }
 
   /* ============ スクロール表示アニメ ============ */
   .reveal{ opacity:0; transform:translateY(22px); transition:opacity .9s ease, transform .9s ease; }
@@ -282,88 +280,85 @@
   <!-- ============ Our Story ============ -->
   <section class="section section--cream" id="story">
     <div class="container">
-    <div class="two-col">
-      <div class="reveal">
-        <p class="eyebrow">Our Story</p>
-        <h2 class="headline">変わらない一杯を、<br>変わらないこの場所で。</h2>
-        <p class="body-text">一九九六年、この場所で小さな喫茶店をはじめました。妻が選んだ豆を、私が一粒ずつ焙煎する。あの頃から変わらないのは、急がず、ていねいに一杯を淹れること。</p>
-        <p class="body-text">新しいお店も増えましたが、ここには三十年分の時間と、変わらない味があります。どうぞ、ゆっくりしていってください。</p>
-        <p class="sign">— SUNA CAFE</p>
+      <div class="two-col">
+        <div class="reveal">
+          <p class="eyebrow">Our Story</p>
+          <h2 class="headline">変わらない一杯を、<br>変わらないこの場所で。</h2>
+          <p class="body-text">一九九六年、この場所で小さな喫茶店をはじめました。妻が選んだ豆を、私が一粒ずつ焙煎する。あの頃から変わらないのは、急がず、ていねいに一杯を淹れること。</p>
+          <p class="body-text">新しいお店も増えましたが、ここには三十年分の時間と、変わらない味があります。どうぞ、ゆっくりしていってください。</p>
+          <p class="sign">— SUNA CAFE</p>
+        </div>
+        <div class="photo reveal" role="img" aria-label="ハンドドリップで淹れる珈琲"></div>
       </div>
-      <!-- 写真: 差し替え時は background を url('images/pourover.jpg') に -->
-      <div class="photo reveal" role="img" aria-label="ハンドドリップで淹れる珈琲"></div>
-    </div>
     </div>
   </section>
 
   <!-- ============ Signature ============ -->
   <section class="section section--cream-light" id="signature">
     <div class="container">
-    <div class="two-col">
-      <!-- 写真: 差し替え時は background を url('images/cup.jpg') に -->
-      <div class="photo photo--cup reveal" role="img" aria-label="オリジナルブレンドコーヒー"></div>
-      <div class="reveal">
-        <p class="eyebrow">Signature</p>
-        <h2 class="headline">いちばんに、<br>飲んでほしい一杯。</h2>
-        <p class="sub-jp">オリジナルブレンド ハンドドリップコーヒー</p>
-        <p class="sub-en">Original Blend, Hand Drip</p>
-        <p class="body-text">自家焙煎したオリジナルブレンドの豆を、一杯ずつ手で淹れます。深く香ばしく、当店だけの味わい。長く通ってくださる常連さんにも愛される、看板の一杯です。</p>
-        <p class="price">¥ 500</p>
+      <div class="two-col">
+        <div class="photo photo--cup reveal" role="img" aria-label="オリジナルブレンドコーヒー"></div>
+        <div class="reveal">
+          <p class="eyebrow">Signature</p>
+          <h2 class="headline">いちばんに、<br>飲んでほしい一杯。</h2>
+          <p class="sub-jp">オリジナルブレンド ハンドドリップコーヒー</p>
+          <p class="sub-en">Original Blend, Hand Drip</p>
+          <p class="body-text">自家焙煎したオリジナルブレンドの豆を、一杯ずつ手で淹れます。深く香ばしく、当店だけの味わい。長く通ってくださる常連さんにも愛される、看板の一杯です。</p>
+          <p class="price">¥ 500</p>
+        </div>
       </div>
-    </div>
     </div>
   </section>
 
   <!-- ============ Menu（★価格は仮。Figmaの値に要確認） ============ -->
   <section class="menu" id="menu">
     <div class="container">
-    <div class="head reveal">
-      <p class="eyebrow">Menu</p>
-      <h2>お品書き</h2>
-    </div>
-    <div class="menu-grid reveal">
-      <div>
-        <p class="menu-cat">Coffee</p>
-        <div class="menu-item"><span>オリジナルブレンド</span><span class="dots"></span><span class="yen">¥500</span></div>
-        <div class="menu-item"><span>深煎りブレンド</span><span class="dots"></span><span class="yen">¥550</span></div>
-        <div class="menu-item"><span>カフェオレ</span><span class="dots"></span><span class="yen">¥550</span></div>
-        <div class="menu-item"><span>本日のストレート</span><span class="dots"></span><span class="yen">¥600</span></div>
+      <div class="head reveal">
+        <p class="eyebrow">Menu</p>
+        <h2>お品書き</h2>
       </div>
-      <div>
-        <p class="menu-cat">Drink</p>
-        <div class="menu-item"><span>紅茶</span><span class="dots"></span><span class="yen">¥500</span></div>
-        <div class="menu-item"><span>ミルクティー</span><span class="dots"></span><span class="yen">¥550</span></div>
-        <div class="menu-item"><span>クリームソーダ</span><span class="dots"></span><span class="yen">¥600</span></div>
+      <div class="menu-grid reveal">
+        <div>
+          <p class="menu-cat">Coffee</p>
+          <div class="menu-item"><span>オリジナルブレンド</span><span class="dots"></span><span class="yen">¥500</span></div>
+          <div class="menu-item"><span>深煎りブレンド</span><span class="dots"></span><span class="yen">¥550</span></div>
+          <div class="menu-item"><span>カフェオレ</span><span class="dots"></span><span class="yen">¥550</span></div>
+          <div class="menu-item"><span>本日のストレート</span><span class="dots"></span><span class="yen">¥600</span></div>
+        </div>
+        <div>
+          <p class="menu-cat">Drink</p>
+          <div class="menu-item"><span>紅茶</span><span class="dots"></span><span class="yen">¥500</span></div>
+          <div class="menu-item"><span>ミルクティー</span><span class="dots"></span><span class="yen">¥550</span></div>
+          <div class="menu-item"><span>クリームソーダ</span><span class="dots"></span><span class="yen">¥600</span></div>
+        </div>
+        <div>
+          <p class="menu-cat">Food and Sweets</p>
+          <div class="menu-item"><span>厚切りトースト</span><span class="dots"></span><span class="yen">¥400</span></div>
+          <div class="menu-item"><span>ハムエッグトースト</span><span class="dots"></span><span class="yen">¥600</span></div>
+          <div class="menu-item"><span>ナポリタン</span><span class="dots"></span><span class="yen">¥800</span></div>
+          <div class="menu-item"><span>自家製プリン</span><span class="dots"></span><span class="yen">¥450</span></div>
+        </div>
       </div>
-      <div>
-        <p class="menu-cat">Food and Sweets</p>
-        <div class="menu-item"><span>厚切りトースト</span><span class="dots"></span><span class="yen">¥400</span></div>
-        <div class="menu-item"><span>ハムエッグトースト</span><span class="dots"></span><span class="yen">¥600</span></div>
-        <div class="menu-item"><span>ナポリタン</span><span class="dots"></span><span class="yen">¥800</span></div>
-        <div class="menu-item"><span>自家製プリン</span><span class="dots"></span><span class="yen">¥450</span></div>
-      </div>
-    </div>
     </div>
   </section>
 
   <!-- ============ Access ============ -->
   <section class="section section--cream" id="access">
     <div class="container">
-    <p class="eyebrow reveal">Access</p>
-    <h2 class="headline reveal" style="margin-bottom:2rem;">アクセス・営業時間</h2>
-    <div class="access-grid">
-      <div class="reveal">
-        <div class="info-row"><span class="label">Open</span><span class="val">平日・土曜　9:00 – 18:00</span></div>
-        <div class="info-row"><span class="label">Closed</span><span class="val">日曜日</span></div>
-        <div class="info-row"><span class="label">Parking</span><span class="val">3台分のスペースあり<span class="note">お停めしにくい場合はご連絡ください</span></span></div>
-        <div class="info-row"><span class="label">Address</span><span class="val">〇〇県〇〇市〇〇 0-0-0</span></div>
-        <div class="info-row"><span class="label">Tel</span><span class="val">000-000-0000</span></div>
+      <p class="eyebrow reveal">Access</p>
+      <h2 class="headline reveal">アクセス・営業時間</h2>
+      <div class="access-grid">
+        <div class="reveal">
+          <div class="info-row"><span class="label">Open</span><span class="val">平日・土曜　9:00 – 18:00</span></div>
+          <div class="info-row"><span class="label">Closed</span><span class="val">日曜日</span></div>
+          <div class="info-row"><span class="label">Parking</span><span class="val">3台分のスペースあり<span class="note">お停めしにくい場合はご連絡ください</span></span></div>
+          <div class="info-row"><span class="label">Address</span><span class="val">〇〇県〇〇市〇〇 0-0-0</span></div>
+          <div class="info-row"><span class="label">Tel</span><span class="val">000-000-0000</span></div>
+        </div>
+        <div class="map reveal" role="img" aria-label="店舗周辺の地図">
+          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d416941.76874438237!2d138.02955633835728!3d35.27223511593939!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601bbf207a58856f%3A0xadc77626a8878101!2z6Z2Z5bKh55yM6Z2Z5bKh5biC!5e0!3m2!1sja!2sjp!4v1780637025567!5m2!1sja!2sjp" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
       </div>
-      <!-- 実装時はGoogleマップの埋め込み（iframe）に差し替え -->
-      <div class="map reveal" role="img" aria-label="店舗周辺の地図">
-        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d416941.76874438237!2d138.02955633835728!3d35.27223511593939!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601bbf207a58856f%3A0xadc77626a8878101!2z6Z2Z5bKh55yM6Z2Z5bKh5biC!5e0!3m2!1sja!2sjp!4v1780637025567!5m2!1sja!2sjp" width="400" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-      </div>
-    </div>
     </div>
   </section>
 
